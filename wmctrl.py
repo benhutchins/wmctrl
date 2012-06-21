@@ -114,9 +114,13 @@ def minimize():
 def move_active(x,y,w,h):
     unmaximize()
 
+    print x, y, w, h
+
     # Sanity check, make sure bottom of window does not end up hidden
     if (y+h) > max_height:
         h = max_height - y
+
+    print x, y, w, h
 
     command = "wmctrl -r :ACTIVE: -e 0," + str(x) + "," + str(y)+ "," + str(w) + "," + str(h)
     os.system(command)
@@ -133,7 +137,7 @@ def left(shift = False):
     else:
         w = max_width/2
 
-    h = max_height - window_title_height - window_border_width - panel_height
+    h = max_height - window_title_height
     move_active(0, panel_height, w - window_border_width, h)
 
 
@@ -147,7 +151,7 @@ def right(shift = False):
         w = max_width/2 - window_border_width
         x = max_width/2
 
-    h = max_height - window_title_height - window_border_width 
+    h = max_height - window_title_height
     move_active(x, panel_height, w, h)
 
 
