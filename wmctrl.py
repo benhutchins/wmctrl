@@ -18,6 +18,8 @@ window_border_width = 1
 panel_height = 30
 leway_percentage = .05
 
+debug = False
+
 # Initialize, get data we need
 def initialize():
     desk_output = commands.getoutput("wmctrl -d").split("\n")
@@ -107,20 +109,22 @@ def unmaximize():
 def minimize():
     unmaximize()
 
-    command = "wmctrl -r :ACTIVE: -b add,below"
-    os.system(command)
+    #command = "wmctrl -r :ACTIVE: -b add,below"
+    #os.system(command)
 
 
 def move_active(x,y,w,h):
     unmaximize()
 
-    print x, y, w, h
+    if debug:
+        print x, y, w, h
 
     # Sanity check, make sure bottom of window does not end up hidden
     if (y+h) > max_height:
         h = max_height - y
 
-    print x, y, w, h
+    if debug:
+        print x, y, w, h
 
     command = "wmctrl -r :ACTIVE: -e 0," + str(x) + "," + str(y)+ "," + str(w) + "," + str(h)
     os.system(command)
@@ -143,16 +147,17 @@ def left(shift = False):
 
 def right(shift = False):
     if shift:
-        w = max_width/4 - window_border_width
+        w = max_width/4
+        x = w * 3
+
         if within_leway(w):
             w = w * 3
-        x = max_width/4 * 3
     else:
-        w = max_width/2 - window_border_width
+        w = max_width/2
         x = max_width/2
 
     h = max_height - window_title_height
-    move_active(x, panel_height, w, h)
+    move_active(x, panel_height, w - window_border_width, h)
 
 
 def up(shift = False):
